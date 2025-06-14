@@ -1,4 +1,67 @@
-# Welcome to your organization's demo respository
-This code repository (or "repo") is designed to demonstrate the best GitHub has to offer with the least amount of noise.
+# 🏌️‍♂️ 골프 스윙 이벤트 탐지 시스템 (SwingNet 기반 개선 모델)
 
-The repo includes an `index.html` file (so it can render a web page), two GitHub Actions workflows, and a CSS stylesheet dependency.
+본 프로젝트는 [McNally et al.의 GolfDB](https://github.com/wmcnally/golfdb)를 기반으로 하여,  
+경량 하이브리드 모델인 **SwingNet**을 개선한 **골프 스윙 이벤트 탐지 시스템**입니다.
+
+우리는 최신 딥러닝 기법을 반영하여 모델의 **정확도**, **일반화 성능**, **학습 안정성**을 향상시키고,  
+**데이터 불균형** 및 **자원 제약 환경**에서의 문제를 해결하고자 다양한 기법을 적용하였습니다.
+
+---
+
+## ✅ 핵심 개선 사항
+
+### 📌 백본 교체 (Backbone Replacement)
+
+기존 MobileNetV2 백본을 다음과 같은 최신 네트워크로 교체하여 성능 개선을 시도하였습니다:
+
+- **MobileNetV4**
+- **EfficientNet (예: EfficientNetV2-L)**
+- **ConvLSTM**: 시공간 정보 처리를 위한 순환 합성곱 구조 도입
+
+---
+
+### 🧪 데이터 증강 (Data Augmentation)
+
+- `Albumentations` 라이브러리를 사용해 다양한 증강 기법 적용
+- **데이터 편향 및 과적합 문제**를 완화
+- 소수 클래스에서도 **일반화 성능 향상**
+
+---
+
+## 🔁 학습 기법 개선
+
+### 📉 학습률 스케줄러 (Learning Rate Scheduler)
+
+다음 세 가지 학습률 스케줄링 기법을 실험하였습니다:
+
+- **LambdaLR**: 정의한 람다 함수에 따라 학습률 선형/비선형 조정  
+- **ExponentialLR**: 에폭마다 학습률에 감쇠 계수(γ)를 곱함  
+- **CosineAnnealingLR**: 초기 학습률과 최소 학습률 사이를 코사인 곡선으로 감쇠  
+  → **현재 적용 중**
+
+> 💡 *Cosine Annealing은 학습 안정성과 성능 향상에 효과적이었습니다.*
+
+---
+
+### 🔥 워밍업 (Warm-Up)
+
+- 초기 학습률을 점진적으로 증가시켜 **급격한 가중치 업데이트 방지**
+- 특히 **사전학습된 백본을 파인튜닝(fine-tuning)** 할 때 유용
+- **수렴 안정성 향상**
+
+---
+
+## 📈 Gradient Accumulation (기울기 누적)
+
+자원 제약 환경(GPU 메모리 부족 등)에서도 **안정적인 학습**을 위해 적용:
+
+- ✅ **메모리 효율성**: 작은 미니배치를 반복 처리하여 큰 배치 효과 달성  
+- ✅ **일관된 업데이트**: 누적된 기울기를 통해 안정적인 방향으로 학습 진행  
+- ✅ **학습 안정성 확보**: 작은 배치로 인한 노이즈를 줄여 부드러운 수렴 유도  
+
+---
+
+## 🚀 기대 효과
+
+- 시퀀스별 골프 스윙 분석 정확도 향상  
+- 소규모, 편향된 데이터셋에서도
