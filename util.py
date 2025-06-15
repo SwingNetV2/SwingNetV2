@@ -40,7 +40,6 @@ def correct_preds(probs, labels, tol=-1):
 
 
 def freeze_layers(num_freeze, net):
-    # print("Freezing {:2d} layers".format(num_freeze))
     i = 1
     for child in net.children():
         if i ==1:
@@ -54,11 +53,21 @@ def freeze_layers(num_freeze, net):
 
 
 transform_video_frames = A.Compose([ A.Resize(height=160, width=160),
-                          A.HorizontalFlip(p=0.5),
-                          A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], max_pixel_value=255.0), # 0605
-                          A.ToTensorV2(),
-])
+                                     A.HorizontalFlip(p=0.5),
+                                     A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], max_pixel_value=255.0), # 0605
+                                     A.ToTensorV2(),
+            ])
 
+event_names = {
+    0: 'Address',
+    1: 'Toe-up',
+    2: 'Mid-backswing (arm parallel)',
+    3: 'Top',
+    4: 'Mid-downswing (arm parallel)',
+    5: 'Impact',
+    6: 'Mid-follow-through (shaft parallel)',
+    7: 'Finish'
+}
 
 class ToTensor(object):
     """Convert ndarrays in sample to Tensors."""
