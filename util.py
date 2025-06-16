@@ -57,32 +57,3 @@ transform_video_frames = A.Compose([ A.Resize(height=160, width=160),
                                      A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], max_pixel_value=255.0), # 0605
                                      A.ToTensorV2(),
             ])
-
-event_names = {
-    0: 'Address',
-    1: 'Toe-up',
-    2: 'Mid-backswing (arm parallel)',
-    3: 'Top',
-    4: 'Mid-downswing (arm parallel)',
-    5: 'Impact',
-    6: 'Mid-follow-through (shaft parallel)',
-    7: 'Finish'
-}
-
-class ToTensor(object):
-    """Convert ndarrays in sample to Tensors."""
-    def __call__(self, sample):
-        images= sample['images']
-        images = images.transpose((0, 3, 1, 2))
-        return {'images': torch.from_numpy(images).float().div(255.)}
-
-
-class Normalize(object):
-    def __init__(self, mean, std):
-        self.mean = torch.tensor(mean, dtype=torch.float32)
-        self.std = torch.tensor(std, dtype=torch.float32)
-
-    def __call__(self, sample):
-        images = sample['images']
-        images.sub_(self.mean[None, :, None, None]).div_(self.std[None, :, None, None])
-        return {'images': images}
