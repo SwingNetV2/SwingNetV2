@@ -26,7 +26,7 @@ df['split'] = df['split'].apply(lambda x: x[0][0])
 df.index = df.index.astype(int)
 df.to_pickle('golfDB.pkl')
 
-df = pd.read_pickle('/content/drive/MyDrive/Y_TRY/golfdb/data/golfDB.pkl')
+df = pd.read_pickle('golfDB.pkl')
 train_split, val_split = train_test_split(df, test_size=0.2, random_state=42)
 train_split = train_split.reset_index()
 train_split = train_split.drop(columns=['index'])
