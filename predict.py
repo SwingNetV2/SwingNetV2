@@ -1,23 +1,19 @@
-import os
-import os.path as osp
 import argparse
+
 import cv2
+import numpy as np
 import torch
 import torch.nn.functional as F
-import numpy as np
-import math
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
-from google.colab.patches import cv2_imshow
 
 import mediapipe as mp
-from predict_utils import *
-from model.event_detector import EventDetector
-from mediapipe import solutions
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from mediapipe.framework.formats import landmark_pb2
+
+from predict_utils import *    
+from model import EventDetector
 
 
 model = EventDetector(lstm_layers=1,
